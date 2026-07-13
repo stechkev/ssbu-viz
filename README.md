@@ -1,11 +1,13 @@
 # Squad Smash Stats
 
-A single-file, offline data-viz dashboard for our group's **Super Smash Bros. Ultimate**
+An offline data-viz dashboard for our group's **Super Smash Bros. Ultimate**
 stats — 26 players, 39 tracked stats, broken down per fighter.
 
 ## Use it
 
-Just double-click **`index.html`**. No server, no install — the data is baked into the file.
+Just double-click **`index.html`**. No server, no install — the stats are baked into the
+file; the only external assets are the fighter portraits in `portraits/` (loaded by
+relative path, so they work both on `file://` and when hosted).
 
 Two views:
 
@@ -13,12 +15,16 @@ Two views:
   K/D, damage ratio) and the fun ones (most drownings, self-destructs, distance walked,
   peak-damage king). Top 3 get the podium treatment.
 - **👤 Players** — tap any player for a profile: headline stat cards showing where they
-  rank in the group, plus their most-played fighters with per-fighter KOs and win rate.
+  rank in the group, their top-3 "mains" as portraits, and their most-played fighters
+  (with official portraits) plus per-fighter KOs and win rate.
 
 ## Data
 
 - `data/` holds the raw CSVs, one per `<player> - <stat>`. These were OCR'd from
   in-game screenshots (the `candidates` column is the OCR audit trail: `{value: vote_count}`).
+- `portraits/` holds the 86 official fighter stock portraits (72×64 PNG), named to match
+  the `character` field exactly. The profile view falls back to an initials badge if a
+  portrait is ever missing.
 - **OCR reconciliation** (`reconcile()` in `build_data.py`): the rows are in the game's
   true rank order, so chosen values must be non-increasing down a file. `read_value` was
   already picked using that order, which hides digit-inflations on the *top* cell (a
