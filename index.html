@@ -143,6 +143,63 @@
   .phead .mains-strip { margin-left: auto; display: flex; gap: 6px; align-items: center; }
   .phead .mains-strip .mlabel { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-right: 2px; }
   .cportrait-lg { width: 46px; height: 46px; border-radius: 10px; object-fit: cover; background: var(--panel-2); border: 1px solid var(--line); }
+
+  /* ---- Global controls bar ---- */
+  .globalbar { display: flex; align-items: center; gap: 10px; justify-content: center; margin: -8px 0 22px; flex-wrap: wrap; }
+  .ctrl-btn {
+    background: var(--panel); color: var(--muted); border: 1px solid var(--line);
+    padding: 7px 14px; border-radius: 999px; cursor: pointer; font-weight: 700; font-size: 13px;
+    transition: all 0.15s ease;
+  }
+  .ctrl-btn:hover { color: var(--text); border-color: var(--red); }
+  .ctrl-btn.on { background: var(--panel-2); color: var(--gold); border-color: var(--gold); }
+  .ctrl-note { color: var(--muted); font-size: 12px; }
+  .filter-panel {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+    padding: 14px 16px; margin-bottom: 22px; box-shadow: var(--shadow);
+  }
+  .filter-panel .fp-head { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; }
+  .filter-panel .fp-head .mini { background: var(--panel-2); color: var(--muted); border: 1px solid var(--line);
+    border-radius: 8px; padding: 4px 10px; font-size: 12px; font-weight: 700; cursor: pointer; }
+  .filter-panel .fp-head .mini:hover { color: var(--text); border-color: var(--red); }
+  .fp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 6px; }
+  .fp-chip {
+    display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px;
+    background: var(--panel-2); border: 1px solid var(--line); cursor: pointer; font-size: 13px; font-weight: 600;
+    user-select: none;
+  }
+  .fp-chip.off { opacity: 0.4; }
+  .fp-chip input { accent-color: var(--red); }
+
+  /* ---- Pie charts ---- */
+  .pie-wrap { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; background: var(--panel);
+    border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+  .pie { flex: none; }
+  .pie-legend { display: flex; flex-direction: column; gap: 5px; min-width: 150px; flex: 1; }
+  .pie-item { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+  .pie-item .swatch { width: 11px; height: 11px; border-radius: 3px; flex: none; }
+  .pie-item .pl-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pie-item .pl-val { color: var(--muted); font-variant-numeric: tabular-nums; font-weight: 700; }
+  .panel-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+  @media (max-width: 620px) { .panel-cols { grid-template-columns: 1fr; } }
+
+  /* ---- Character page ---- */
+  .char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; }
+  .ccard { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 14px;
+    cursor: pointer; transition: all 0.15s ease; text-align: center; }
+  .ccard:hover { border-color: var(--red); transform: translateY(-3px); box-shadow: var(--shadow); }
+  .ccard img { width: 60px; height: 54px; object-fit: cover; border-radius: 8px; background: var(--panel-2);
+    border: 1px solid var(--line); }
+  .ccard .cn { font-weight: 700; font-size: 13px; margin-top: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ccard .cm { color: var(--muted); font-size: 11px; margin-top: 2px; }
+  .chead-img { width: 72px; height: 64px; object-fit: cover; border-radius: 14px; border: 1px solid var(--line); background: var(--panel-2); }
+  .best-list { display: flex; flex-direction: column; gap: 6px; }
+  .best-row { display: grid; grid-template-columns: 26px 1fr auto; align-items: center; gap: 10px;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; }
+  .best-row .badge { width: 24px; height: 24px; border-radius: 7px; display: grid; place-items: center; font-size: 10px; font-weight: 900; color: #0e0f1a; }
+  .best-row .bn { font-weight: 700; font-size: 13px; }
+  .best-row .bv { font-weight: 900; font-variant-numeric: tabular-nums; }
+  .subhead { font-size: 13px; font-weight: 800; color: var(--muted); margin: 0 0 8px; text-transform: uppercase; letter-spacing: 0.5px; }
   .main-row .cname { font-weight: 700; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .main-row .num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 14px; }
   .main-row .num small { color: var(--muted); font-weight: 600; }
@@ -165,7 +222,15 @@
   <div class="tabs">
     <button class="tab active" data-view="leaderboards">🏆 Leaderboards</button>
     <button class="tab" data-view="profiles">👤 Players</button>
+    <button class="tab" data-view="characters">🎮 Characters</button>
   </div>
+
+  <div class="globalbar">
+    <button class="ctrl-btn" id="weightBtn" title="Weighted adjusts rates for sample size so a fighter played once can't top a list. Raw shows unadjusted numbers."></button>
+    <button class="ctrl-btn" id="filterBtn">🔎 Filter players</button>
+    <span class="ctrl-note" id="filterSummary"></span>
+  </div>
+  <div class="filter-panel" id="filterPanel" style="display:none"></div>
 
   <!-- LEADERBOARDS -->
   <section class="view active" id="view-leaderboards">
@@ -183,6 +248,12 @@
     <div id="profileDetail" style="display:none"></div>
   </section>
 
+  <!-- CHARACTERS -->
+  <section class="view" id="view-characters">
+    <div id="charList"></div>
+    <div id="charDetail" style="display:none"></div>
+  </section>
+
   <footer id="footer"></footer>
 </div>
 
@@ -197,6 +268,46 @@
   var MIN_FIGHTER_BATTLES = 10; // per-fighter Win% below this is dimmed as low-sample
   function battlesOf(p) { return (p.totals && p.totals.Battles) || 0; }
   function qualifies(p, stat) { return !stat.rate || battlesOf(p) >= MIN_BATTLES; }
+
+  // ---- weighting + player-filter state (persisted per browser) ----
+  var SHRINK_C = 20; // pseudo-battles: how much evidence it takes to trust a raw rate
+  var LS = window.localStorage;
+  var weightMode = (function () { try { return LS.getItem("ssbu.weight") !== "raw"; } catch (e) { return true; } })();
+  var hidden = (function () {
+    try { return new Set(JSON.parse(LS.getItem("ssbu.hidden") || "[]")); } catch (e) { return new Set(); }
+  })();
+  function persist() {
+    try {
+      LS.setItem("ssbu.weight", weightMode ? "weighted" : "raw");
+      LS.setItem("ssbu.hidden", JSON.stringify(Array.from(hidden)));
+    } catch (e) {}
+  }
+  function visiblePlayers() { return players.filter(function (p) { return !hidden.has(p.name); }); }
+
+  // Empirical-Bayes shrinkage: pull a raw rate toward `prior` by C pseudo-battles.
+  function shrink(raw, n, prior) {
+    if (raw == null || isNaN(raw)) return raw;
+    return (raw * n + prior * SHRINK_C) / (n + SHRINK_C);
+  }
+  // Battles-weighted mean of a rate across visible players — the shrink prior.
+  var priorCache = {};
+  function groupPrior(stat) {
+    if (priorCache[stat.key] != null) return priorCache[stat.key];
+    var num = 0, den = 0;
+    visiblePlayers().forEach(function (p) {
+      var raw = getStatVal(p, stat), b = battlesOf(p);
+      if (raw != null && !isNaN(raw) && b) { num += raw * b; den += b; }
+    });
+    return (priorCache[stat.key] = den ? num / den : 0);
+  }
+  // Display/ranking value: shrunk when weighting is on and the stat is a rate.
+  function statVal(p, stat) {
+    var raw = getStatVal(p, stat);
+    if (weightMode && stat.rate && raw != null && !isNaN(raw)) {
+      return shrink(raw, battlesOf(p), groupPrior(stat));
+    }
+    return raw;
+  }
 
   // ---- Stat catalog: which stats appear in the leaderboard dropdown ----
   // src: "totals" | "derived"; hib = higher is better
@@ -289,6 +400,49 @@
     var s = ["th", "st", "nd", "rd"], v = n % 100;
     return n + (s[(v - 20) % 10] || s[v] || s[0]);
   }
+  function scard(label, valHtml, extra) {
+    return '<div class="scard"><div class="k">' + label + '</div><div class="v">' + valHtml + '</div>' + (extra || "") + '</div>';
+  }
+
+  // ---- pie charts (inline SVG, no library) ----
+  var PIE_PAL = ["#ff3b3b", "#4cc9f0", "#ffca3a", "#57e389", "#b388ff", "#ff8fab",
+    "#ff9f1c", "#2ec4b6", "#e07a5f", "#8ac926", "#00bbf9", "#f15bb5"];
+  function pieSVG(segs, size) {
+    size = size || 150;
+    var total = segs.reduce(function (s, x) { return s + x.value; }, 0);
+    if (!total) return "";
+    var r = size / 2, ang = -Math.PI / 2, paths = "";
+    segs.forEach(function (seg) {
+      var frac = seg.value / total;
+      if (frac <= 0) return;
+      if (frac >= 0.9999) { paths += '<circle cx="' + r + '" cy="' + r + '" r="' + r + '" fill="' + seg.color + '"/>'; return; }
+      var a2 = ang + frac * 2 * Math.PI;
+      var x1 = r + r * Math.cos(ang), y1 = r + r * Math.sin(ang);
+      var x2 = r + r * Math.cos(a2), y2 = r + r * Math.sin(a2);
+      var large = frac > 0.5 ? 1 : 0;
+      paths += '<path d="M' + r + ',' + r + ' L' + x1.toFixed(2) + ',' + y1.toFixed(2) +
+        ' A' + r + ',' + r + ' 0 ' + large + ' 1 ' + x2.toFixed(2) + ',' + y2.toFixed(2) + ' Z" fill="' + seg.color + '"/>';
+      ang = a2;
+    });
+    return '<svg class="pie" viewBox="0 0 ' + size + ' ' + size + '" width="' + size + '" height="' + size + '">' + paths + '</svg>';
+  }
+  function pieLegend(segs) {
+    var total = segs.reduce(function (s, x) { return s + x.value; }, 0) || 1;
+    return '<div class="pie-legend">' + segs.map(function (s) {
+      return '<div class="pie-item"><span class="swatch" style="background:' + s.color + '"></span>' +
+        '<span class="pl-label">' + s.label + '</span><span class="pl-val">' + Math.round(s.value / total * 100) + '%</span></div>';
+    }).join("") + "</div>";
+  }
+  function topSegments(entries, n, colorFn) {
+    entries = entries.filter(function (e) { return e.value > 0; }).sort(function (a, b) { return b.value - a.value; });
+    var segs = entries.slice(0, n).map(function (e, i) { return { label: e.label, value: e.value, color: colorFn(e.label, i) }; });
+    var other = entries.slice(n).reduce(function (s, e) { return s + e.value; }, 0);
+    if (other > 0) segs.push({ label: "Other", value: other, color: "#3a3f63" });
+    return segs;
+  }
+  function pieBlock(segs) {
+    return segs.length ? '<div class="pie-wrap">' + pieSVG(segs, 150) + pieLegend(segs) + "</div>" : '<div class="ctrl-note">No data</div>';
+  }
 
   // ================= LEADERBOARDS =================
   var statSelect = document.getElementById("statSelect");
@@ -313,18 +467,19 @@
   function renderBoard() {
     var stat = STATS[parseInt(statSelect.value, 10)];
 
-    var eligible = players.filter(function (p) { return qualifies(p, stat); });
-    var hidden = players.length - eligible.length;
+    var pool = visiblePlayers();
+    var eligible = pool.filter(function (p) { return qualifies(p, stat); });
+    var belowCut = pool.length - eligible.length;
 
     var desc = stat.hib ? "Higher is better" : "Lower is better — top = most";
     if (stat.rate) {
-      desc += " · min " + MIN_BATTLES + " battles to qualify" +
-        (hidden ? " (" + hidden + " below cutoff)" : "");
+      desc += (weightMode ? " · weighted" : " · raw") + " · min " + MIN_BATTLES + " battles" +
+        (belowCut ? " (" + belowCut + " below cutoff)" : "");
     }
     document.getElementById("statDesc").textContent = desc;
 
     var rows = eligible
-      .map(function (p) { return { p: p, v: getStatVal(p, stat) }; })
+      .map(function (p) { return { p: p, v: statVal(p, stat) }; })
       .filter(function (r) { return r.v != null && !isNaN(r.v); })
       .sort(function (a, b) { return b.v - a.v; });
 
@@ -365,9 +520,10 @@
   // ================= PROFILES =================
   var profileList = document.getElementById("profileList");
   var profileDetail = document.getElementById("profileDetail");
+  var openProfileName = null;
 
   function renderProfileList() {
-    var sorted = players.slice().sort(function (a, b) {
+    var sorted = visiblePlayers().slice().sort(function (a, b) {
       return (b.totals.Battles || 0) - (a.totals.Battles || 0);
     });
     profileList.innerHTML =
@@ -390,8 +546,8 @@
 
   // rank of a player within the group for a given stat key
   function rankIn(player, stat) {
-    var vals = players.filter(function (p) { return qualifies(p, stat); })
-      .map(function (p) { return { n: p.name, v: getStatVal(p, stat) }; })
+    var vals = visiblePlayers().filter(function (p) { return qualifies(p, stat); })
+      .map(function (p) { return { n: p.name, v: statVal(p, stat) }; })
       .filter(function (x) { return x.v != null && !isNaN(x.v); })
       .sort(function (a, b) { return stat.hib ? b.v - a.v : a.v - b.v; });
     for (var i = 0; i < vals.length; i++) if (vals[i].n === player.name) return { rank: i + 1, of: vals.length };
@@ -405,13 +561,13 @@
     return "bad";
   }
 
-  function openProfile(name) {
+  function openProfile(name, silent) {
     var p = DB.players[name];
     if (!p) return;
-    setTab("profiles");
+    openProfileName = name;
+    if (!silent) { setTab("profiles"); window.scrollTo({ top: 0, behavior: "smooth" }); }
     profileList.style.display = "none";
     profileDetail.style.display = "block";
-    window.scrollTo({ top: 0, behavior: "smooth" });
 
     var headline = [
       { label: "Battles",   stat: STATS.find(function (s) { return s.key === "Battles"; }) },
@@ -423,7 +579,7 @@
     ];
 
     var cards = headline.map(function (h) {
-      var v = getStatVal(p, h.stat);
+      var v = statVal(p, h.stat);
       var r = rankIn(p, h.stat);
       var rc = r ? ratingClass(r.rank, r.of) : "mid";
       var unit = h.stat.unit === "hrs" ? " hrs" : h.stat.unit;
@@ -436,17 +592,18 @@
       );
     }).join("");
 
-    // Top mains by battles
-    var chars = Object.keys(p.characters || {}).map(function (c) {
+    // Fighters by battles; per-fighter Win% shrinks toward the player's overall
+    // rate when weighting is on, so a 1-game fighter can't show a fluke 100%.
+    var pWR = (p.derived && p.derived["Win Rate"]) || 0;
+    var allChars = Object.keys(p.characters || {}).map(function (c) {
       var d = p.characters[c];
+      var rawWr = d.battles ? (d.victories || 0) / d.battles * 100 : 0;
       return {
-        name: c,
-        battles: d.battles || 0,
-        kos: d.kos || 0,
-        victories: d.victories || 0,
-        wr: d.battles ? (d.victories || 0) / d.battles * 100 : 0,
+        name: c, battles: d.battles || 0, kos: d.kos || 0, victories: d.victories || 0,
+        wr: weightMode ? shrink(rawWr, d.battles || 0, pWR) : rawWr,
       };
-    }).sort(function (a, b) { return b.battles - a.battles; }).slice(0, 8);
+    }).sort(function (a, b) { return b.battles - a.battles; });
+    var chars = allChars.slice(0, 8);
 
     var mainRows =
       '<div class="main-row head"><span></span><span>Fighter</span>' +
@@ -475,6 +632,17 @@
         '</div>'
       : '';
 
+    var KO_TYPES = [["KOs_ Smash Attack", "Smash"], ["KOs_ Special Move", "Special"],
+      ["KOs_ Air Attack", "Air"], ["KOs_ Throw", "Throw"], ["KOs_ Tilt Attack", "Tilt"],
+      ["KOs_ Meteor Smash", "Meteor"], ["KOs_ Item", "Item"], ["KOs_ Final Smash", "Final Smash"],
+      ["KOs_ Other", "Other"]];
+    var koSegs = KO_TYPES.map(function (kt, i) {
+      return { label: kt[1], value: (p.totals[kt[0]] || 0), color: PIE_PAL[i % PIE_PAL.length] };
+    }).filter(function (s) { return s.value > 0; });
+    var usageSegs = topSegments(allChars.map(function (c) {
+      return { label: c.name, value: c.battles };
+    }), 8, function (l, i) { return PIE_PAL[i % PIE_PAL.length]; });
+
     profileDetail.innerHTML =
       '<button class="back-btn" id="backBtn">← All players</button>' +
       '<div class="phead">' + badge(p.name) +
@@ -487,11 +655,124 @@
       '</div>' +
       '<div class="stat-cards">' + cards + '</div>' +
       '<div class="section-title">Most-Played Fighters</div>' +
-      '<div class="mains">' + mainRows + '</div>';
+      '<div class="mains">' + mainRows + '</div>' +
+      '<div class="section-title">Breakdown</div>' +
+      '<div class="panel-cols">' +
+        '<div><div class="subhead">KO types</div>' + pieBlock(koSegs) + '</div>' +
+        '<div><div class="subhead">Fighter usage</div>' + pieBlock(usageSegs) + '</div>' +
+      '</div>';
 
     document.getElementById("backBtn").addEventListener("click", function () {
+      openProfileName = null;
       profileDetail.style.display = "none";
       profileList.style.display = "block";
+    });
+  }
+
+  // ================= CHARACTERS =================
+  var charList = document.getElementById("charList");
+  var charDetail = document.getElementById("charDetail");
+  var openCharName = null;
+  var charIndex = null;
+
+  function buildCharIndex() {
+    var idx = {};
+    visiblePlayers().forEach(function (p) {
+      var chars = p.characters || {};
+      Object.keys(chars).forEach(function (c) {
+        var d = chars[c];
+        if (!idx[c]) idx[c] = { name: c, battles: 0, kos: 0, victories: 0, falls: 0, players: [] };
+        var e = idx[c];
+        e.battles += d.battles || 0; e.kos += d.kos || 0;
+        e.victories += d.victories || 0; e.falls += d.falls || 0;
+        e.players.push({ name: p.name, battles: d.battles || 0, kos: d.kos || 0, victories: d.victories || 0, falls: d.falls || 0 });
+      });
+    });
+    return (charIndex = idx);
+  }
+  function getCharIndex() { return charIndex || buildCharIndex(); }
+
+  function renderCharList() {
+    var idx = getCharIndex();
+    var arr = Object.keys(idx).map(function (k) { return idx[k]; })
+      .filter(function (c) { return c.battles > 0; })
+      .sort(function (a, b) { return b.battles - a.battles; });
+    charList.innerHTML =
+      '<div class="section-title">Tap a fighter · ' + arr.length + ' played</div><div class="char-grid">' +
+      arr.map(function (c) {
+        return '<div class="ccard" data-char="' + encodeURIComponent(c.name) + '">' +
+          '<img src="portraits/' + encodeURIComponent(c.name) + '.png" alt="' + c.name + '" onerror="this.style.visibility=\'hidden\'">' +
+          '<div class="cn">' + c.name + '</div><div class="cm">' + fmt(c.battles, "") + ' battles</div></div>';
+      }).join("") + "</div>";
+    charList.querySelectorAll(".ccard").forEach(function (el) {
+      el.addEventListener("click", function () { openCharacter(decodeURIComponent(el.getAttribute("data-char"))); });
+    });
+  }
+
+  function openCharacter(name, silent) {
+    var c = getCharIndex()[name];
+    if (!c) return;
+    openCharName = name;
+    if (!silent) { setTab("characters"); window.scrollTo({ top: 0, behavior: "smooth" }); }
+    charList.style.display = "none";
+    charDetail.style.display = "block";
+
+    var grpWR = c.battles ? c.victories / c.battles * 100 : 0;
+    var grpKD = c.falls ? c.kos / c.falls : 0;
+
+    var byBattles = c.players.slice().sort(function (a, b) { return b.battles - a.battles; });
+    var playedRows =
+      '<div class="main-row head"><span></span><span>Player</span>' +
+      '<span class="num">Battles</span><span class="num">KOs</span><span class="num">Win %</span></div>' +
+      byBattles.map(function (pl) {
+        var rawWr = pl.battles ? pl.victories / pl.battles * 100 : 0;
+        var wr = weightMode ? shrink(rawWr, pl.battles, grpWR) : rawWr;
+        var low = pl.battles < MIN_FIGHTER_BATTLES;
+        return '<div class="main-row">' + badge(pl.name, "cbadge") +
+          '<span class="cname">' + pl.name + '</span>' +
+          '<span class="num">' + fmt(pl.battles, "") + '</span>' +
+          '<span class="num">' + fmt(pl.kos, "") + '</span>' +
+          '<span class="num' + (low ? " lowsample" : "") + '">' + wr.toFixed(0) + '<small>%</small></span></div>';
+      }).join("");
+
+    // Best players with this fighter — shrunk toward the fighter's group rate,
+    // so a one-game 100% can't win.
+    function bestBy(rateFn, prior, fmtV) {
+      return c.players.map(function (pl) {
+        var raw = rateFn(pl);
+        return { name: pl.name, val: weightMode ? shrink(raw, pl.battles, prior) : raw };
+      }).sort(function (a, b) { return b.val - a.val; }).slice(0, 3).map(function (x) {
+        return '<div class="best-row">' + badge(x.name, "badge") +
+          '<span class="bn">' + x.name + '</span><span class="bv">' + fmtV(x.val) + '</span></div>';
+      }).join("");
+    }
+    var bestWR = bestBy(function (pl) { return pl.battles ? pl.victories / pl.battles * 100 : 0; }, grpWR, function (v) { return v.toFixed(0) + "%"; });
+    var bestKD = bestBy(function (pl) { return pl.falls ? pl.kos / pl.falls : 0; }, grpKD, function (v) { return v.toFixed(2); });
+
+    var usageSegs = topSegments(c.players.map(function (pl) { return { label: pl.name, value: pl.battles }; }), 8,
+      function (l) { return colorFor(l); });
+    var adj = weightMode ? " (adjusted)" : "";
+
+    charDetail.innerHTML =
+      '<button class="back-btn" id="charBack">← All fighters</button>' +
+      '<div class="phead"><img src="portraits/' + encodeURIComponent(name) + '.png" alt="' + name +
+        '" class="chead-img" onerror="this.style.display=\'none\'">' +
+        '<div><h2>' + name + '</h2><div class="psub">' + fmt(c.battles, "") + ' battles · ' +
+        c.players.length + ' player' + (c.players.length === 1 ? "" : "s") + '</div></div></div>' +
+      '<div class="stat-cards">' +
+        scard("Total Battles", fmt(c.battles, "")) +
+        scard("Total KOs", fmt(c.kos, "")) +
+        scard("Group Win Rate", grpWR.toFixed(1) + "%") +
+      '</div>' +
+      '<div class="panel-cols">' +
+        '<div><div class="subhead">Usage share</div>' + pieBlock(usageSegs) + '</div>' +
+        '<div><div class="subhead">Best win rate' + adj + '</div><div class="best-list">' + bestWR + '</div>' +
+          '<div class="subhead" style="margin-top:14px">Best K/D' + adj + '</div><div class="best-list">' + bestKD + '</div></div>' +
+      '</div>' +
+      '<div class="section-title">Played Most By</div><div class="mains">' + playedRows + '</div>';
+
+    document.getElementById("charBack").addEventListener("click", function () {
+      openCharName = null; charDetail.style.display = "none"; charList.style.display = "block";
     });
   }
 
@@ -506,9 +787,83 @@
     if (view === "profiles" && profileDetail.style.display !== "block") {
       profileList.style.display = "block";
     }
+    if (view === "characters" && charDetail.style.display !== "block") {
+      charList.style.display = "block";
+    }
   }
   document.querySelectorAll(".tab").forEach(function (t) {
     t.addEventListener("click", function () { setTab(t.getAttribute("data-view")); });
+  });
+
+  // ================= CONTROLS (weighting + player filter) =================
+  function isActive(view) { return document.getElementById("view-" + view).classList.contains("active"); }
+
+  // Re-render everything in place; re-open an open detail without switching tabs.
+  function refresh() {
+    renderBoard();
+    renderProfileList();
+    renderCharList();
+    if (openProfileName != null && DB.players[openProfileName] && !hidden.has(openProfileName) && profileDetail.style.display === "block") {
+      openProfile(openProfileName, true);
+    } else if (openProfileName != null) {
+      openProfileName = null; profileDetail.style.display = "none";
+      if (isActive("profiles")) profileList.style.display = "block";
+    }
+    if (openCharName != null && getCharIndex()[openCharName] && charDetail.style.display === "block") {
+      openCharacter(openCharName, true);
+    } else if (openCharName != null) {
+      openCharName = null; charDetail.style.display = "none";
+      if (isActive("characters")) charList.style.display = "block";
+    }
+  }
+
+  var weightBtn = document.getElementById("weightBtn");
+  function syncWeightBtn() {
+    weightBtn.textContent = weightMode ? "⚖️ Weighted" : "⚖️ Raw";
+    weightBtn.classList.toggle("on", weightMode);
+  }
+  weightBtn.addEventListener("click", function () {
+    weightMode = !weightMode; persist(); syncWeightBtn(); refresh();
+  });
+
+  var filterBtn = document.getElementById("filterBtn");
+  var filterPanel = document.getElementById("filterPanel");
+  function updateFilterSummary() {
+    document.getElementById("filterSummary").textContent = hidden.size ? hidden.size + " hidden" : "";
+  }
+  function onFilterChange() {
+    persist(); priorCache = {}; charIndex = null; updateFilterSummary(); refresh();
+  }
+  function renderFilterPanel() {
+    filterPanel.innerHTML =
+      '<div class="fp-head"><strong>Show players</strong>' +
+        '<button class="mini" data-act="all">All</button><button class="mini" data-act="none">None</button></div>' +
+      '<div class="fp-grid">' +
+      players.slice().sort(function (a, b) { return a.name.localeCompare(b.name); }).map(function (p) {
+        var on = !hidden.has(p.name);
+        return '<label class="fp-chip' + (on ? "" : " off") + '"><input type="checkbox" data-player="' +
+          encodeURIComponent(p.name) + '"' + (on ? " checked" : "") + ">" + p.name + "</label>";
+      }).join("") + "</div>";
+    filterPanel.querySelectorAll("input[type=checkbox]").forEach(function (cb) {
+      cb.addEventListener("change", function () {
+        var nm = decodeURIComponent(cb.getAttribute("data-player"));
+        if (cb.checked) hidden.delete(nm); else hidden.add(nm);
+        cb.parentNode.classList.toggle("off", !cb.checked);
+        onFilterChange();
+      });
+    });
+    filterPanel.querySelectorAll(".mini").forEach(function (b) {
+      b.addEventListener("click", function () {
+        if (b.getAttribute("data-act") === "all") hidden.clear();
+        else players.forEach(function (p) { hidden.add(p.name); });
+        renderFilterPanel(); onFilterChange();
+      });
+    });
+  }
+  filterBtn.addEventListener("click", function () {
+    var show = filterPanel.style.display === "none";
+    filterPanel.style.display = show ? "block" : "none";
+    if (show) renderFilterPanel();
   });
 
   // ================= INIT =================
@@ -517,8 +872,11 @@
   document.getElementById("footer").textContent =
     "Built from " + (DB.generatedFrom || 0) + " stat sheets · read_value as recorded (OCR).";
   statSelect.value = "0";
+  syncWeightBtn();
+  updateFilterSummary();
   renderBoard();
   renderProfileList();
+  renderCharList();
 })();
 </script>
 </body>

@@ -9,14 +9,26 @@ Just double-click **`index.html`**. No server, no install — the stats are bake
 file; the only external assets are the fighter portraits in `portraits/` (loaded by
 relative path, so they work both on `file://` and when hosted).
 
-Two views:
+Three views:
 
 - **🏆 Leaderboards** — rank all 26 players by any stat. Serious ones (KOs, win rate,
   K/D, damage ratio) and the fun ones (most drownings, self-destructs, distance walked,
   peak-damage king). Top 3 get the podium treatment.
 - **👤 Players** — tap any player for a profile: headline stat cards showing where they
-  rank in the group, their top-3 "mains" as portraits, and their most-played fighters
-  (with official portraits) plus per-fighter KOs and win rate.
+  rank in the group, their top-3 "mains" as portraits, their most-played fighters
+  (with official portraits) plus per-fighter KOs and win rate, and pie charts of their
+  KO-type mix and fighter usage.
+- **🎮 Characters** — a portrait grid of every fighter; tap one for group totals on that
+  fighter, a "played most by" list, the best players with it (sample-adjusted), and a
+  usage-share pie.
+
+Two controls sit under the tabs:
+
+- **⚖️ Weighted ⇄ Raw** — *Weighted* (default) adjusts every rate for sample size, so a
+  fighter played once can't top a list; *Raw* shows unadjusted numbers. See below.
+- **🔎 Filter players** — a checklist to show/hide any players (e.g. folks who left);
+  hidden players drop out of leaderboards, the players grid, *and* character aggregates.
+  Both preferences persist per browser.
 
 ## Data
 
@@ -61,6 +73,13 @@ Two views:
   **`MIN_FIGHTER_BATTLES` (10)** battles, so a "100% off one game" reads as low-sample
   rather than a real result. Both thresholds are constants at the top of the script block
   in `index.html`.
+- **Weighted mode** (default, toggleable) applies empirical-Bayes shrinkage to every rate:
+  `weighted = (rawRate × n + prior × C) / (n + C)`, where `n` = battles, `C` = `SHRINK_C`
+  (20 pseudo-battles), and `prior` is the context baseline (the group rate on a leaderboard,
+  the player's overall rate for a per-fighter Win%, the fighter's group rate on a character
+  page). A one-game 100% gets pulled almost all the way to the baseline; a 200-game sample
+  barely moves. This is what stops "played Chrom once, tops the list". Flip to **Raw** for
+  the unadjusted numbers.
 
 ## Regenerate
 
