@@ -755,13 +755,15 @@
     // Best players with this fighter — shrunk toward the fighter's group rate,
     // so a one-game 100% can't win.
     function bestBy(rateFn, prior, fmtV) {
-      return qual.map(function (pl) {
+      var pool = qual.filter(function (pl) { return pl.battles >= MIN_FIGHTER_BATTLES; });
+      var rows = pool.map(function (pl) {
         var raw = rateFn(pl);
         return { name: pl.name, val: weightMode ? shrink(raw, pl.battles, prior) : raw };
       }).sort(function (a, b) { return b.val - a.val; }).slice(0, 3).map(function (x) {
         return '<div class="best-row">' + badge(x.name, "badge") +
           '<span class="bn">' + x.name + '</span><span class="bv">' + fmtV(x.val) + '</span></div>';
       }).join("");
+      return rows || '<div class="ctrl-note">No players with ' + MIN_FIGHTER_BATTLES + '+ battles</div>';
     }
     var bestWR = bestBy(function (pl) { return pl.battles ? pl.victories / pl.battles * 100 : 0; }, grpWR, function (v) { return v.toFixed(0) + "%"; });
     var bestKD = bestBy(function (pl) { return pl.falls ? pl.kos / pl.falls : 0; }, grpKD, function (v) { return v.toFixed(2); });
@@ -808,8 +810,29 @@
       charList.style.display = "block";
     }
   }
+  // Clicking a tab returns it to its top-level "home": the leaderboard resets
+  // to the default stat, and Players/Characters drop any open detail and show
+  // their grid. Global controls (Weighted toggle, player filter) are NOT reset.
+  function goHome(view) {
+    if (view === "leaderboards") {
+      statSelect.value = "0";
+      renderBoard();
+    } else if (view === "profiles") {
+      openProfileName = null;
+      profileDetail.style.display = "none";
+      profileList.style.display = "block";
+    } else if (view === "characters") {
+      openCharName = null;
+      charDetail.style.display = "none";
+      charList.style.display = "block";
+    }
+  }
   document.querySelectorAll(".tab").forEach(function (t) {
-    t.addEventListener("click", function () { setTab(t.getAttribute("data-view")); });
+    t.addEventListener("click", function () {
+      var v = t.getAttribute("data-view");
+      goHome(v);
+      setTab(v);
+    });
   });
 
   // ================= CONTROLS (weighting + player filter) =================
