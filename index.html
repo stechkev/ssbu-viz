@@ -771,6 +771,7 @@
     var usageSegs = topSegments(qual.map(function (pl) { return { label: pl.name, value: pl.battles }; }), 8,
       function (l) { return colorFor(l); });
     var adj = weightMode ? " (adjusted)" : "";
+    var bestNote = " · min " + MIN_FIGHTER_BATTLES + " matches";
 
     charDetail.innerHTML =
       '<button class="back-btn" id="charBack">← All fighters</button>' +
@@ -785,8 +786,8 @@
       '</div>' +
       '<div class="panel-cols">' +
         '<div><div class="subhead">Usage share</div>' + pieBlock(usageSegs) + '</div>' +
-        '<div><div class="subhead">Best win rate' + adj + '</div><div class="best-list">' + bestWR + '</div>' +
-          '<div class="subhead" style="margin-top:14px">Best K/D' + adj + '</div><div class="best-list">' + bestKD + '</div></div>' +
+        '<div><div class="subhead">Best win rate' + adj + bestNote + '</div><div class="best-list">' + bestWR + '</div>' +
+          '<div class="subhead" style="margin-top:14px">Best K/D' + adj + bestNote + '</div><div class="best-list">' + bestKD + '</div></div>' +
       '</div>' +
       '<div class="section-title">Played Most By</div><div class="mains">' + playedRows + '</div>';
 
