@@ -1,0 +1,9 @@
+rank,character,read_value,candidates,correct
+1,Ness,339.0,"{'39': 2, '339': 1}",
+2,Jigglypuff,118.0,{'118': 3},
+3,Dr Mario,4.0,{'4': 3},
+4,Donkey Kong,3.0,{'3': 3},
+4,Lucina,3.0,{'3': 3},
+4,Young Link,3.0,{'3': 3},
+4,Hero,3.0,{'3': 3},
+8,Ganondorf,2.0,{'2': 3},

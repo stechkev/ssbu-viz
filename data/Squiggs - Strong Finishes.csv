@@ -1,0 +1,9 @@
+rank,character,read_value,candidates,correct
+1,Ness,490.0,{'490': 3},
+2,Jigglypuff,45.0,{'45': 3},
+3,Villager,4.0,{'4': 3},
+4,Link,3.0,{'3': 3},
+4,Lucina,3.0,{'3': 3},
+4,Piranha Plant,3.0,{'3': 3},
+7,Captain Falcon,2.0,{'2': 3},
+7,King K Rool,2.0,{'2': 3},

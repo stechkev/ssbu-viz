@@ -1,0 +1,9 @@
+rank,character,read_value,candidates,correct
+1,Donkey Kong,0.0,{'0': 2},
+1,Link,0.0,{'0': 2},
+1,Samus,0.0,{'0': 2},
+1,Yoshi,0.0,{'0': 2},
+1,Kirby,0.0,{'0': 2},
+1,Ness,0.0,{'0': 3},
+1,Captain Falcon,0.0,{'0': 2},
+1,Jigglypuff,0.0,{'0': 2},

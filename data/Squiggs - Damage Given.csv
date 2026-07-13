@@ -1,0 +1,9 @@
+rank,character,read_value,candidates,correct
+1,Ness,387193,{387193: 3},
+2,Jigglypuff,93579,"{93579: 2, 53579: 1}",
+3,Villager,3200,{3200: 3},
+4,Piranha Plant,2790,{2790: 3},
+5,Lucina,2473,{2473: 3},
+6,Link,1833,{1833: 3},
+7,Dr Mario,1416,{1416: 3},
+8,Captain Falcon,1379,{1379: 3},

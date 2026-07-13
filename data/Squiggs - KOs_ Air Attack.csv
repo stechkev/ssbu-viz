@@ -1,0 +1,9 @@
+rank,character,read_value,candidates,correct
+1,Ness,970.0,{'970': 3},
+2,Jigglypuff,204.0,{'204': 3},
+3,Mr Game and Watch,10.0,{'10': 3},
+4,Lucina,7.0,{'7': 3},
+4,Villager,7.0,{'7': 3},
+4,Isabelle,7.0,{'7': 3},
+7,Young Link,5.0,{'5': 3},
+8,Dr Mario,2.0,"{'2': 2, '5': 1}",

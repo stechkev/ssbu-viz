@@ -1,0 +1,9 @@
+rank,character,read_value,candidates,correct
+1,Ness,539.0,"{'539': 2, '339': 1}",
+2,Jigglypuff,25.0,{'25': 3},
+3,Link,3.0,{'3': 3},
+4,Captain Falcon,2.0,{'2': 3},
+4,Lucina,2.0,{'2': 3},
+4,Villager,2.0,{'2': 3},
+4,Kazuya,2.0,{'2': 3},
+8,Yoshi,1.0,{'1': 3},

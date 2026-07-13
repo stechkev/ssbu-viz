@@ -1,0 +1,9 @@
+rank,character,read_value,candidates,correct
+1,Ness,921.0,{'921': 3},
+2,Jigglypuff,152.0,{'152': 3},
+3,Link,7.0,{'7': 3},
+4,Piranha Plant,5.0,"{'9': 2, '5': 1}",
+5,Samus,4.0,{'4': 3},
+5,Captain Falcon,4.0,{'4': 3},
+7,Lucina,2.0,{'2': 3},
+7,Young Link,2.0,{'2': 3},

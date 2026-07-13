@@ -1,0 +1,9 @@
+rank,character,read_value,candidates,correct
+1,Mewtwo,243.0,{'243': 3},
+2,Steve,223.0,{'223': 3},
+3,Ness,221.0,{'221': 3},
+4,Richter,210.0,{'210': 3},
+5,Jigglypuff,204.0,{'204': 3},
+6,King Dedede,202.0,{'202': 3},
+7,Incineroar,199.0,{'199': 3},
+7,Piranha Plant,199.0,{'199': 3},

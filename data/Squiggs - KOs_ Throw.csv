@@ -1,0 +1,9 @@
+rank,character,read_value,candidates,correct
+1,Ness,323.0,{'323': 3},
+2,Jigglypuff,3.0,{'3': 3},
+2,Villager,3.0,{'3': 3},
+4,Samus,1.0,{'1': 3},
+4,Daisy,1.0,{'1': 3},
+4,Sonic,1.0,{'1': 3},
+4,Piranha Plant,1.0,{'1': 3},
+8,Donkey Kong,0.0,{'0': 2},

@@ -1,0 +1,9 @@
+rank,character,read_value,candidates,correct
+1,Ness,2788.0,{'2788': 3},
+2,Jigglypuff,445.0,{'445': 3},
+3,Piranha Plant,21.0,{'21': 3},
+4,Lucina,18.0,{'18': 3},
+4,Villager,18.0,{'18': 3},
+6,Link,15.0,{'15': 3},
+6,Mr Game and Watch,15.0,{'15': 3},
+8,Captain Falcon,11.0,{'11': 2},

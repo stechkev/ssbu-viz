@@ -1,0 +1,9 @@
+rank,character,read_value,candidates,correct
+1,Ness,3013.0,{'3013': 3},
+2,Jigglypuff,683.0,{'683': 3},
+3,Villager,38.0,{'38': 3},
+4,Piranha Plant,29.0,{'29': 3},
+5,Lucina,22.0,{'22': 3},
+6,Dr Mario,18.0,{'18': 3},
+6,Young Link,18.0,{'18': 3},
+8,Isabelle,14.0,{'14': 3},

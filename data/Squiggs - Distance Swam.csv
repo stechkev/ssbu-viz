@@ -1,0 +1,9 @@
+rank,character,read_value,candidates,correct
+1,Bayonetta,33.0,{'33': 3},
+2,Ness,29.0,"{'29': 2, '290': 1}",
+3,Jigglypuff,12.0,{'12': 3},
+4,Donkey Kong,0.0,{'0': 2},
+4,Link,0.0,{'0': 1},
+4,Samus,0.0,{'0': 2},
+4,Yoshi,0.0,{'0': 1},
+4,Kirby,0.0,{'0': 1},
