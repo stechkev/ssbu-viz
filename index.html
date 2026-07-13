@@ -211,6 +211,7 @@
   .main-row .num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 14px; }
   .main-row .num small { color: var(--muted); font-weight: 600; }
   .main-row .num.lowsample { color: var(--muted); opacity: 0.45; }
+  .main-row.zero { opacity: 0.4; }
 
   footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 40px; }
   @media (max-width: 560px) {
@@ -724,28 +725,37 @@
     charList.style.display = "none";
     charDetail.style.display = "block";
 
-    var grpWR = c.battles ? c.victories / c.battles * 100 : 0;
-    var grpKD = c.falls ? c.kos / c.falls : 0;
+    // Only players who actually played this fighter (battles > 0) count toward
+    // its stats; 0-battle rows are OCR artifacts (a stray KO with no recorded
+    // battles) — shown greyed in the list but excluded from every aggregate.
+    var qual = c.players.filter(function (pl) { return pl.battles > 0; });
+    var totB = qual.reduce(function (s, pl) { return s + pl.battles; }, 0);
+    var totK = qual.reduce(function (s, pl) { return s + pl.kos; }, 0);
+    var totV = qual.reduce(function (s, pl) { return s + pl.victories; }, 0);
+    var totF = qual.reduce(function (s, pl) { return s + pl.falls; }, 0);
+    var grpWR = totB ? totV / totB * 100 : 0;
+    var grpKD = totF ? totK / totF : 0;
 
     var byBattles = c.players.slice().sort(function (a, b) { return b.battles - a.battles; });
     var playedRows =
       '<div class="main-row head"><span></span><span>Player</span>' +
       '<span class="num">Battles</span><span class="num">KOs</span><span class="num">Win %</span></div>' +
       byBattles.map(function (pl) {
+        var zero = pl.battles <= 0;
         var rawWr = pl.battles ? pl.victories / pl.battles * 100 : 0;
         var wr = weightMode ? shrink(rawWr, pl.battles, grpWR) : rawWr;
-        var low = pl.battles < MIN_FIGHTER_BATTLES;
-        return '<div class="main-row">' + badge(pl.name, "cbadge") +
+        var low = !zero && pl.battles < MIN_FIGHTER_BATTLES;
+        return '<div class="main-row' + (zero ? " zero" : "") + '">' + badge(pl.name, "cbadge") +
           '<span class="cname">' + pl.name + '</span>' +
           '<span class="num">' + fmt(pl.battles, "") + '</span>' +
           '<span class="num">' + fmt(pl.kos, "") + '</span>' +
-          '<span class="num' + (low ? " lowsample" : "") + '">' + wr.toFixed(0) + '<small>%</small></span></div>';
+          '<span class="num' + (low ? " lowsample" : "") + '">' + (zero ? "—" : wr.toFixed(0) + '<small>%</small>') + '</span></div>';
       }).join("");
 
     // Best players with this fighter — shrunk toward the fighter's group rate,
     // so a one-game 100% can't win.
     function bestBy(rateFn, prior, fmtV) {
-      return c.players.map(function (pl) {
+      return qual.map(function (pl) {
         var raw = rateFn(pl);
         return { name: pl.name, val: weightMode ? shrink(raw, pl.battles, prior) : raw };
       }).sort(function (a, b) { return b.val - a.val; }).slice(0, 3).map(function (x) {
@@ -756,7 +766,7 @@
     var bestWR = bestBy(function (pl) { return pl.battles ? pl.victories / pl.battles * 100 : 0; }, grpWR, function (v) { return v.toFixed(0) + "%"; });
     var bestKD = bestBy(function (pl) { return pl.falls ? pl.kos / pl.falls : 0; }, grpKD, function (v) { return v.toFixed(2); });
 
-    var usageSegs = topSegments(c.players.map(function (pl) { return { label: pl.name, value: pl.battles }; }), 8,
+    var usageSegs = topSegments(qual.map(function (pl) { return { label: pl.name, value: pl.battles }; }), 8,
       function (l) { return colorFor(l); });
     var adj = weightMode ? " (adjusted)" : "";
 
@@ -764,11 +774,11 @@
       '<button class="back-btn" id="charBack">← All fighters</button>' +
       '<div class="phead"><img src="portraits/' + encodeURIComponent(name) + '.png" alt="' + name +
         '" class="chead-img" onerror="this.style.display=\'none\'">' +
-        '<div><h2>' + name + '</h2><div class="psub">' + fmt(c.battles, "") + ' battles · ' +
-        c.players.length + ' player' + (c.players.length === 1 ? "" : "s") + '</div></div></div>' +
+        '<div><h2>' + name + '</h2><div class="psub">' + fmt(totB, "") + ' battles · ' +
+        qual.length + ' player' + (qual.length === 1 ? "" : "s") + '</div></div></div>' +
       '<div class="stat-cards">' +
-        scard("Total Battles", fmt(c.battles, "")) +
-        scard("Total KOs", fmt(c.kos, "")) +
+        scard("Total Battles", fmt(totB, "")) +
+        scard("Total KOs", fmt(totK, "")) +
         scard("Group Win Rate", grpWR.toFixed(1) + "%") +
       '</div>' +
       '<div class="panel-cols">' +
