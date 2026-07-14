@@ -142,6 +142,37 @@ def cap_by_battles(raw, cands):
     return changes
 
 
+# (player, character) OCR errors confirmed by domain knowledge that the
+# automated passes can't catch — the reading is internally consistent (in rank
+# order, within battle caps) but still wrong. "min" re-picks the smallest OCR
+# candidate for every stat of that player+character (these rows were inflated
+# across the board and the small candidate is the true value); "drop" removes
+# the character from that player entirely.
+MANUAL_FIXES = {
+    ("keg", "Wolf"): "min",  # keg barely plays Wolf; the rank-1 Wolf row read inflated
+}
+
+
+def apply_manual_fixes(raw, cands):
+    changes = []
+    for (player, char), action in MANUAL_FIXES.items():
+        for stat, per_char in list(raw.get(player, {}).items()):
+            if char not in per_char:
+                continue
+            if action == "drop":
+                old = per_char.pop(char)
+                changes.append((player, stat, char, old, 0))
+            elif action == "min":
+                cand = cands.get(player, {}).get(stat, {}).get(char, {})
+                if not cand:
+                    continue
+                lo = min(cand.keys())
+                if abs(lo - per_char[char]) > 1e-6:
+                    changes.append((player, stat, char, per_char[char], lo))
+                    per_char[char] = lo
+    return changes
+
+
 def audit_percentages(raw):
     """Report any percentage or derived rate that still exceeds 100%."""
     problems = []
@@ -207,6 +238,7 @@ def load():
 
     _report_changes("OCR reconciliation (rank order)", rank_changes)
     _report_changes("OCR reconciliation (battles cap)", cap_by_battles(raw, cands))
+    _report_changes("Manual OCR fixes (domain knowledge)", apply_manual_fixes(raw, cands))
     audit_percentages(raw)
     return raw
 
