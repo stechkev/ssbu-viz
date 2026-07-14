@@ -149,7 +149,14 @@ def cap_by_battles(raw, cands):
 # across the board and the small candidate is the true value); "drop" removes
 # the character from that player entirely.
 MANUAL_FIXES = {
-    ("keg", "Wolf"): "min",  # keg barely plays Wolf; the rank-1 Wolf row read inflated
+    # Wolf is barely played across the group; several players' Wolf rows read
+    # inflated (a big OCR value alongside a coherent small one). Confirmed by
+    # the group that none of these are real Wolf players — take the small reading.
+    ("keg", "Wolf"): "min",
+    ("chrisw", "Wolf"): "min",
+    ("ace", "Wolf"): "min",
+    ("Jackson", "Wolf"): "min",
+    ("seanrad", "Wolf"): "min",
 }
 
 
