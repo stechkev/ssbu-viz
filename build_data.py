@@ -295,9 +295,58 @@ def derive(players):
     return players
 
 
+# Players the Switch dropped (inactive/too old to still list). Reconstructed
+# from all_stats_totals.json: for each fighter they played, their stats are the
+# all-time total minus the sum of currently-recorded players (what's left is
+# theirs). Only valid when the player is the sole missing contributor for those
+# fighters. Underivable stats (Peak Damage, anything not in the totals file)
+# are simply omitted so the UI shows "—" rather than a fabricated value.
+DROPPED_PLAYERS = {
+    "Khiry": ["Peach", "Daisy", "Wii Fit Trainer"],
+}
+
+
+def add_dropped_players(players, raw):
+    path = os.path.join(HERE, "all_stats_totals.json")
+    if not os.path.exists(path):
+        print("WARNING: all_stats_totals.json missing — skipping dropped players")
+        return []
+    with open(path, encoding="utf-8") as fh:
+        allstats = json.load(fh)
+    added = []
+    for name, fighters in DROPPED_PLAYERS.items():
+        totals = defaultdict(float)
+        chars = {}
+        for fighter in fighters:
+            per = {}
+            for stat, total in allstats.get(fighter, {}).items():
+                cur = sum(raw[pl].get(stat, {}).get(fighter, 0) for pl in raw)
+                delta = round(total - cur, 2)
+                if delta <= 0:
+                    continue  # nothing left to attribute -> omit -> shows "—"
+                totals[stat] += delta
+                field = CHAR_FIELDS.get(stat)
+                if field:
+                    per[field] = delta
+            if per:
+                chars[fighter] = per
+        players[name] = {
+            "name": name,
+            "totals": {k: round(v, 2) for k, v in totals.items()},
+            "characters": chars,
+            "reconstructed": True,
+        }
+        added.append(name)
+    return added
+
+
 def main():
     raw = load()
-    players = derive(aggregate(raw))
+    players = aggregate(raw)
+    dropped = add_dropped_players(players, raw)
+    if dropped:
+        print("Reconstructed dropped player(s): " + ", ".join(dropped))
+    players = derive(players)
 
     # Build the stat catalog for the leaderboard dropdown.
     # (label, key, group, source, unit, higherIsBetter)

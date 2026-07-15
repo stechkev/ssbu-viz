@@ -63,6 +63,20 @@ Two controls sit under the tabs:
 - `Play Time` is stored in **minutes** in the source data and displayed as hours.
 - Echo fighters (Peach/Daisy, etc.) are kept separate — we're ranking players, not fighters.
 
+### Reconstructed (dropped) players
+
+The Switch drops players who haven't played in a long time, so some real players
+have no per-player CSVs. They're reconstructed from a comprehensive all-time totals
+workbook (`SSBU_All_Stats_Final.xlsx` → `all_stats_totals.json` via
+`extract_allstats.py`): for each fighter a dropped player mained, their stats are the
+**all-time per-fighter total minus the sum of currently-recorded players** — what's
+left is theirs. This only holds when the player is the *sole* missing contributor for
+those fighters, which is asserted per-player in `DROPPED_PLAYERS` in `build_data.py`.
+Underivable stats (Peak Damage is a max, not a sum; anything absent from the workbook)
+are omitted so the UI shows **"—"** rather than a fabricated number. Reconstructed
+players are tagged in the UI (a gold `↺` on their card and a "reconstructed" note on
+their profile). Currently: **Khiry** (Peach / Daisy / Wii Fit Trainer).
+
 ### Sample-size guards
 
 - **Rate-based leaderboards** (Win Rate, K/D, KOs/Battle, Avg Falls/Battle, Damage Ratio,
