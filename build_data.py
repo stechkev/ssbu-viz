@@ -348,10 +348,19 @@ def main():
         print("Reconstructed dropped player(s): " + ", ".join(dropped))
     players = derive(players)
 
-    # Build the stat catalog for the leaderboard dropdown.
-    # (label, key, group, source, unit, higherIsBetter)
+    # Per-fighter all-time totals (for the character-page "Other" / unrecorded
+    # row): only the fields the character page needs.
+    char_totals = {}
+    allstats_path = os.path.join(HERE, "all_stats_totals.json")
+    if os.path.exists(allstats_path):
+        with open(allstats_path, encoding="utf-8") as fh:
+            _all = json.load(fh)
+        keep = ("Battles", "KOs", "Victories _Smash Mode", "Total Falls")
+        char_totals = {f: {k: v[k] for k in keep if k in v} for f, v in _all.items()}
+
     dataset = {
         "players": players,
+        "charTotals": char_totals,
         "generatedFrom": len(glob.glob(os.path.join(DATA_DIR, "*.csv"))),
     }
 

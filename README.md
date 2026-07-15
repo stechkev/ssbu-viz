@@ -77,6 +77,17 @@ are omitted so the UI shows **"—"** rather than a fabricated number. Reconstru
 players are tagged in the UI (a gold `↺` on their card and a "reconstructed" note on
 their profile). Currently: **Khiry** (Peach / Daisy / Wii Fit Trainer).
 
+### Character-page "Other" (unrecorded) row
+
+Beyond named dropped players, every fighter also has leftover play from players we
+can't name individually. On each character page an **"Other"** aggregate row (in
+*Played Most By*) captures that remainder — `all-time total − sum of recorded players`
+(including Khiry) — for **Battles / KOs / Win %**, so the character's **Total Battles,
+Total KOs, and Group Win Rate** reflect the comprehensive all-time numbers. Per-fighter
+totals come from `charTotals` in the dataset. "Other" is excluded from the best-player
+lists and the usage-share pie (it isn't a real player), and the delta is clamped at 0,
+so a fighter whose recorded total already meets the all-time total gets no "Other" row.
+
 ### Sample-size guards
 
 - **Rate-based leaderboards** (Win Rate, K/D, KOs/Battle, Avg Falls/Battle, Damage Ratio,
