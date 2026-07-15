@@ -334,7 +334,7 @@
     { group: "Core", label: "K/D Ratio",            src: "derived", key: "K/D Ratio",           unit: "", hib: true, rate: true },
     { group: "Core", label: "KOs per Battle",       src: "derived", key: "KOs/Battle",          unit: "", hib: true, rate: true },
     { group: "Core", label: "Total Falls",          src: "totals",  key: "Total Falls",         unit: "", hib: false },
-    { group: "Core", label: "Avg Falls / Battle",   src: "derived", key: "Avg Falls/Battle",    unit: "", hib: false, rate: true },
+    { group: "Core", label: "Avg Falls / Battle",   src: "derived", key: "Avg Falls/Battle",    unit: "", hib: false, rate: true, asc: true },
 
     { group: "Damage", label: "Damage Given",       src: "totals",  key: "Damage Given",        unit: "%", hib: true },
     { group: "Damage", label: "Damage Taken",       src: "totals",  key: "Damage Taken",        unit: "%", hib: false },
@@ -486,7 +486,8 @@
     var eligible = pool.filter(function (p) { return qualifies(p, stat); });
     var belowCut = pool.length - eligible.length;
 
-    var desc = stat.hib ? "Higher is better" : "Lower is better — top = most";
+    var desc = stat.asc ? "Lower is better — best on top"
+      : (stat.hib ? "Higher is better" : "Lower is better — top = most");
     if (stat.rate) {
       desc += (weightMode ? " · weighted" : " · raw") + " · min " + MIN_BATTLES + " battles" +
         (belowCut ? " (" + belowCut + " below cutoff)" : "");
@@ -496,7 +497,7 @@
     var rows = eligible
       .map(function (p) { return { p: p, v: statVal(p, stat) }; })
       .filter(function (r) { return r.v != null && !isNaN(r.v); })
-      .sort(function (a, b) { return b.v - a.v; });
+      .sort(function (a, b) { return stat.asc ? a.v - b.v : b.v - a.v; });
 
     var max = rows.length ? Math.max.apply(null, rows.map(function (r) { return Math.abs(r.v); })) : 1;
     var board = document.getElementById("board");
