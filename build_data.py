@@ -305,14 +305,38 @@ DROPPED_PLAYERS = {
     "Khiry": ["Peach", "Daisy", "Wii Fit Trainer"],
 }
 
+# The all-stats workbook spells some fighters differently than our CSV data.
+# Normalize workbook names to our names so they don't create phantom duplicates.
+# ("Mii Fighter" has no clean 1:1 mapping to our Brawler/Gunner split, so it's
+# left unmapped and dropped by the known-character filter.)
+NAME_MAP = {
+    "Banjo & Kazooie": "Banjo and Kazooie",
+    "Bowser Jr.": "Bowser Jr",
+    "Dr. Mario": "Dr Mario",
+    "King K. Rool": "King K Rool",
+    "Mr. Game & Watch": "Mr Game and Watch",
+    "Pyra/Mythra": "Pyra-Mythra",
+    "R.O.B.": "ROB",
+    "Rosalina & Luma": "Rosalina and Luma",
+    "Mii Swordfighter": "Mii Swordsman",
+}
 
-def add_dropped_players(players, raw):
+
+def load_allstats():
+    """All-stats per-fighter totals, keyed by our character names."""
     path = os.path.join(HERE, "all_stats_totals.json")
     if not os.path.exists(path):
+        return {}
+    with open(path, encoding="utf-8") as fh:
+        raw = json.load(fh)
+    return {NAME_MAP.get(k, k): v for k, v in raw.items()}
+
+
+def add_dropped_players(players, raw):
+    allstats = load_allstats()
+    if not allstats:
         print("WARNING: all_stats_totals.json missing — skipping dropped players")
         return []
-    with open(path, encoding="utf-8") as fh:
-        allstats = json.load(fh)
     added = []
     for name, fighters in DROPPED_PLAYERS.items():
         totals = defaultdict(float)
@@ -349,14 +373,17 @@ def main():
     players = derive(players)
 
     # Per-fighter all-time totals (for the character-page "Other" / unrecorded
-    # row): only the fields the character page needs.
-    char_totals = {}
-    allstats_path = os.path.join(HERE, "all_stats_totals.json")
-    if os.path.exists(allstats_path):
-        with open(allstats_path, encoding="utf-8") as fh:
-            _all = json.load(fh)
-        keep = ("Battles", "KOs", "Victories _Smash Mode", "Total Falls")
-        char_totals = {f: {k: v[k] for k in keep if k in v} for f, v in _all.items()}
+    # row): normalized to our names and limited to fighters that actually appear
+    # in our data, so no phantom duplicates are created.
+    known_chars = set()
+    for p in players.values():
+        known_chars.update((p.get("characters") or {}).keys())
+    keep = ("Battles", "KOs", "Victories _Smash Mode", "Total Falls")
+    char_totals = {
+        f: {k: v[k] for k in keep if k in v}
+        for f, v in load_allstats().items()
+        if f in known_chars
+    }
 
     dataset = {
         "players": players,
